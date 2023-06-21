@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:apikit="http://www.mulesoft.org/schema/mule/mule-apikit" xmlns:tls="http://www.mulesoft.org/schema/mule/tls"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns:api-gateway="http://www.mulesoft.org/schema/mule/api-gateway"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+http://www.mulesoft.org/schema/mule/mule-apikit http://www.mulesoft.org/schema/mule/mule-apikit/current/mule-apikit.xsd 
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd 
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd 
+http://www.mulesoft.org/schema/mule/api-gateway http://www.mulesoft.org/schema/mule/api-gateway/current/mule-api-gateway.xsd http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
+
+	<!-- TLSのための設定 -->
+	<tls:context name="apiTLSContext">
+		<tls:key-store type="pkcs12" path="check-in-papi.p12" password="mule12345" keyPassword="mule12345" alias="server" />
+	</tls:context>
+
+	<http:listener-config name="apiHttpListenerConfig">
+		<http:listener-connection host="0.0.0.0" port="8081" protocol="HTTPS" tlsContext="apiTLSContext" />
+	</http:listener-config>
+	<!-- TLSのための設定 -->
+
+	<apikit:config name="apiConfig" api="resource::5aa6791f-a5c8-4f60-9cac-dd3e396b4bcf:check-in-papi:1.0.0:oas:zip:api.json"
+		outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
+	<api-gateway:autodiscovery apiId="18776017" ignoreBasePath="true" doc:name="API Autodiscovery"
+		doc:id="3c02cf77-8ed9-4d2e-946e-44dfbc3f3a20" flowRef="api-main" />
+		
+</mule>
