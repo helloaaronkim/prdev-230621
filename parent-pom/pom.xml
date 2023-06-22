@@ -17,11 +17,21 @@
 	<name>solutions-parent-pom</name>
 
 	<properties>
-		<!-- <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding> -->
-
-		<app.runtime>4.4.0-20230320</app.runtime>
-		<mule.maven.plugin.version>3.8.2</mule.maven.plugin.version>
+		<!-- Not explicitly used but needed for deployment to Exchange,
+		otherwise Exchange cannot determine the asset type -->
+		<type>custom</type>
+		<!-- for automated deployments -->
+		<deployment.env>set with -Ddeployment.env=...</deployment.env>
+		<deployment.suffix>-${deployment.env}</deployment.suffix>
+		<deployment.name>${project.name}${deployment.suffix}</deployment.name>
+		<!-- requires AP environments to have the same name as the env
+		property value in Mule apps (which determines the property files to
+		load) -->
+		<ap.environment>${deployment.env}</ap.environment>
+		<ap.client_id>set with -Dap.client_id=...</ap.client_id>
+		<ap.client_secret>set with -Dap.client_secret=...</ap.client_secret>
+		<ap.ca.client_id>set with -Dap.ca.client_id=...</ap.ca.client_id>
+		<ap.ca.client_secret>set with -Dap.ca.client_secret=...</ap.ca.client_secret>
 	</properties>
 
 	<build>
@@ -76,26 +86,9 @@
 							<connectedAppClientId>${ap.ca.client_id}</connectedAppClientId>
 							<connectedAppClientSecret>${ap.ca.client_secret}</connectedAppClientSecret>
 							<connectedAppGrantType>client_credentials</connectedAppGrantType>
-							<!-- <properties>
+							<properties>
 								<anypoint.platform.client_id>${ap.client_id}</anypoint.platform.client_id>
 								<anypoint.platform.client_secret>${ap.client_secret}</anypoint.platform.client_secret>
-							</properties> -->
-							<properties>
-								<!-- Not explicitly used but needed for deployment to Exchange,
-								otherwise Exchange cannot determine the asset type -->
-								<type>custom</type>
-								<!-- for automated deployments -->
-								<deployment.env>set with -Ddeployment.env=...</deployment.env>
-								<deployment.suffix>-${deployment.env}</deployment.suffix>
-								<deployment.name>${project.name}${deployment.suffix}</deployment.name>
-								<!-- requires AP environments to have the same name as the env
-								property value in Mule apps (which determines the property files to
-								load) -->
-								<ap.environment>${deployment.env}</ap.environment>
-								<ap.client_id>set with -Dap.client_id=...</ap.client_id>
-								<ap.client_secret>set with -Dap.client_secret=...</ap.client_secret>
-								<ap.ca.client_id>set with -Dap.ca.client_id=...</ap.ca.client_id>
-								<ap.ca.client_secret>set with -Dap.ca.client_secret=...</ap.ca.client_secret>
 								<!-- set encrypt.key for decrypting secure (encryped) properties
 								files (but don't set it here!) -->
 								<env>${deployment.env}</env>
