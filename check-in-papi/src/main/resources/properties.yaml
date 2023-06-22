@@ -1,0 +1,10 @@
+api:
+    groupId: "${api.groupId}"
+    artifactId: "${api.artifactId}"
+    version: "${api.version}"
+    spec: "resource::${api.groupId}:${api.artifactId}:${api.version}:oas:zip:api.json"
+    majorVersion: "v1"
+    id: "18776017"
+
+https:
+    port: "8081"
