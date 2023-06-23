@@ -17,6 +17,12 @@
 	<name>solutions-parent-pom</name>
 
 	<properties>
+        <api.layer.eapi>Experience</api.layer.eapi>
+        <api.layer.papi>Process</api.layer.papi>
+        <api.layer.sapi>System</api.layer.sapi>
+        <api.layer.backend>Backend</api.layer.backend>
+        <api.layer.none>None</api.layer.none>
+
 		<!-- Not explicitly used but needed for deployment to Exchange,
 		otherwise Exchange cannot determine the asset type -->
 		<type>custom</type>
@@ -50,6 +56,29 @@
 
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>com.mulesoft.munit.tools</groupId>
+					<artifactId>munit-maven-plugin</artifactId>
+					<version>${munit.version}</version>
+					<executions>
+						<execution>
+							<id>test</id>
+							<phase>test</phase>
+							<goals>
+								<goal>test</goal>
+								<goal>coverage-report</goal>
+							</goals>
+						</execution>
+					</executions>
+					<configuration>
+						<coverage>
+							<runCoverage>true</runCoverage>
+							<formats>
+								<format>html</format>
+							</formats>
+						</coverage>
+					</configuration>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-resources-plugin</artifactId>
@@ -87,6 +116,10 @@
 							<connectedAppClientSecret>${ap.ca.client_secret}</connectedAppClientSecret>
 							<connectedAppGrantType>client_credentials</connectedAppGrantType>
 							<properties>
+								<anypoint.platform.config.analytics.agent.enabled>true</anypoint.platform.config.analytics.agent.enabled>
+								<anypoint.platform.visualizer.displayName>${project.name}</anypoint.platform.visualizer.displayName>
+								<anypoint.platform.visualizer.layer>${api.layer}</anypoint.platform.visualizer.layer>
+
 								<anypoint.platform.client_id>${ap.client_id}</anypoint.platform.client_id>
 								<anypoint.platform.client_secret>${ap.client_secret}</anypoint.platform.client_secret>
 								<!-- set encrypt.key for decrypting secure (encryped) properties

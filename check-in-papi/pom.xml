@@ -11,7 +11,7 @@
 
 	<groupId>5aa6791f-a5c8-4f60-9cac-dd3e396b4bcf</groupId>
 	<artifactId>check-in-papi-app</artifactId>
-	<version>1.0.1</version>
+	<version>1.0.2</version>
 	<packaging>mule-application</packaging>
 
 	<name>check-in-papi</name>
@@ -20,6 +20,8 @@
 		<api.groupId>5aa6791f-a5c8-4f60-9cac-dd3e396b4bcf</api.groupId>
 		<api.artifactId>check-in-papi</api.artifactId>
 		<api.version>1.0.0</api.version>
+		<api.layer>${api.layer.papi}</api.layer>
+		<munit.version>2.3.14</munit.version>
 	</properties>
 
 	<build>
@@ -28,6 +30,10 @@
 				<groupId>org.mule.tools.maven</groupId>
 				<artifactId>mule-maven-plugin</artifactId>
 				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>com.mulesoft.munit.tools</groupId>
+				<artifactId>munit-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
 	</build>
@@ -53,6 +59,35 @@
 			<groupId>com.mulesoft.modules</groupId>
 			<artifactId>mule-secure-configuration-property-module</artifactId>
 			<classifier>mule-plugin</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.modules</groupId>
+			<artifactId>mule-tracing-module</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>${student.deployment.ap.orgid}</groupId>
+			<artifactId>apps-commons</artifactId>
+			<classifier>mule-plugin</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>com.mulesoft.munit</groupId>
+			<artifactId>munit-runner</artifactId>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.mulesoft.munit</groupId>
+			<artifactId>munit-tools</artifactId>
+			<classifier>mule-plugin</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mule.weave</groupId>
+			<artifactId>assertions</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

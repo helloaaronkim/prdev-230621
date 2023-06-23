@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="api-alive" doc:id="3e5f7b02-a154-40c3-b95c-048170cd6416" >
+		<http:listener doc:name="GET /alive" doc:id="dc3549e1-c5c3-4743-a968-c7e998ad2c65" config-ref="apiHttpListenerConfig" path="/alive"/>
+		<set-payload value='#["UP"]' doc:name='"UP"' doc:id="e4d61a94-95d1-4aaa-9a30-4b1e1fc02c83" />
+	</flow>
+	<flow name="api-ready" doc:id="e714aea1-1991-4749-a86b-8ceb656568e9" >
+		<http:listener doc:name="GET /ready" doc:id="f7fc1ed3-dc88-4705-9f19-828432bed616" config-ref="apiHttpListenerConfig" path="/ready"/>
+		<flow-ref doc:name="Flow Reference" doc:id="84991898-a047-4d6d-87ad-d1579cc08343" name="check-all-dependencies-are-alive" />
+		<set-payload value='#["UP"]' doc:name='"UP"' doc:id="3c88b631-ae7b-4308-b27d-26e2747e4f80" />
+	</flow>
+</mule>

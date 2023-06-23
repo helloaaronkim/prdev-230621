@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xsi:schemaLocation="
+		http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+		http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd
+		http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd">
+	<munit:config name="new-test-suite.xml" />
+	<munit:test name="new-test-suite-payment-approval-by-pnrTest" doc:id="2c8cf1e7-e98f-40a9-a277-1724859fdcfd" description="Test">
+	
+	
+		<munit:behavior>
+			<munit-tools:mock-when processor="flow-ref">
+				<munit-tools:with-attributes>
+				<munit-tools:with-attribute attributeName="name" whereValue="check-in-flights-management" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+				<munit-tools:payload value="#[output application/json --- {}]"/>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when processor="flow-ref">
+				<munit-tools:with-attributes>
+			<munit-tools:with-attribute attributeName="name" whereValue="register-passenger-data" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+				<munit-tools:payload value="#[output application/json --- {}]"/>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+			<munit-tools:mock-when processor="flow-ref">
+				<munit-tools:with-attributes>
+				<munit-tools:with-attribute attributeName="name" whereValue="create-payment-for-bags" />
+				</munit-tools:with-attributes>
+				<munit-tools:then-return>
+				<munit-tools:payload value="#[output application/json --- {}]"/>
+				</munit-tools:then-return>
+			</munit-tools:mock-when>
+		</munit:behavior>	
+	
+		<munit:execution >
+
+			<munit:set-event>
+				<munit:payload value="#[output application/json --- read(MunitTools::getResourceAsString('json/check-in-by-pnr-request.json'), 'application/json')]" />
+				<munit:variables>
+					<munit:variable key="PNR" value="N123" />
+				</munit:variables>
+			</munit:set-event>
+			<flow-ref doc:name="Flow-ref to check-in-by-pnr" doc:id="5b4705ae-fe65-4f9d-a446-ceebe7225ea3" name="check-in-by-pnr"/>
+		</munit:execution>
+
+		<munit:validation>
+			<munit-tools:verify-call times="1" processor="flow-ref">
+			<munit-tools:with-attributes>
+				<munit-tools:with-attribute attributeName="name" whereValue="check-in-flights-management" />
+			</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call times="1" processor="flow-ref">
+				<munit-tools:with-attributes>
+				<munit-tools:with-attribute attributeName="name" whereValue="register-passenger-data" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:verify-call times="1" processor="flow-ref">
+				<munit-tools:with-attributes>
+					<munit-tools:with-attribute attributeName="name" whereValue="create-payment-for-bags" />
+				</munit-tools:with-attributes>
+			</munit-tools:verify-call>
+			<munit-tools:assert-that is='#[MunitTools::equalTo({"paymentID": "PAY-1AKD7482FAB9STATKO"})]' expression="#[payload]"/>
+		</munit:validation>
+
+
+	</munit:test>
+
+</mule>

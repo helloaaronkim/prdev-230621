@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
-	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+<mule xmlns:tracing="http://www.mulesoft.org/schema/mule/tracing" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/tracing http://www.mulesoft.org/schema/mule/tracing/current/mule-tracing.xsd">
 	<flow name="payment-approval-by-pnr" doc:id="8c432360-709a-4e41-989f-80ec2b60c1f2" >
 		<ee:transform doc:name="Transform Message">
 			<ee:variables>
@@ -33,6 +34,12 @@ output application/json
 		</ee:transform>
 	</flow>
 	<flow name="check-in-by-pnr" doc:id="0ce94be2-4afe-450a-816f-59b321b6acb5" >
+		<tracing:set-logging-variable doc:name="Set logging variable" doc:id="2a263991-1bf0-4753-83d7-84a4a5e40ba3" variableName="PNR" value="#[&quot;This is a sample text for checking logging's behavior.&quot;]"/>
+		
+		<flow-ref name="check-in-flights-management" />
+		<flow-ref name="register-passenger-data" />
+		<flow-ref name="create-payment-for-bags" />
+		
 		<ee:transform doc:name="Transform Message">
 			<ee:variables>
 				<ee:set-variable variableName="PNR">attributes.uriParams.'PNR'</ee:set-variable>
@@ -48,5 +55,15 @@ output application/json
 }]]></ee:set-payload>
 			</ee:message>
 		</ee:transform>
+	</flow>
+
+	<flow name="check-in-flights-management">
+    	<logger />
+    </flow>
+    <flow name="register-passenger-data">
+    	<logger />
+    </flow>
+    <flow name="create-payment-for-bags">
+    	<logger />
 	</flow>
 </mule>
